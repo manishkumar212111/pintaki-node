@@ -6,7 +6,6 @@ const widgetController = require('./controller/widgetController')
 const testWare = (req, res, next) => {
     next();
 } 
-console.log(typeof pageController,pageController)
 router.get('/home' , testWare , pageController.home);
 router.get('/projects/add' , testWare , pageController.addProject);
 router.get('/blogs/add' , testWare , pageController.addBlog);
@@ -17,4 +16,6 @@ router.get('/blog/detail' , testWare , pageController.blogDetail);
 router.get('/project/detail' , testWare , pageController.projectDetail);
 
 router.post('/leads' , testWare , widgetController.leadSubmit);
+router.post('/contacts' , testWare , widgetController.contactUs);
+
 module.exports = router ;
