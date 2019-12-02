@@ -22,4 +22,4 @@ app.use(function(req, res, next) {
 });
 app.use('/api/v1', apiV1);
 
-app.listen(port, () => console.log(`Pintaki app listening on port ${port}!`))
+app.listen(process.env.PORT || port, () => console.log(`Pintaki app listening on port ${port}!`))
