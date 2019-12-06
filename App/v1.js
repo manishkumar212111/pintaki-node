@@ -17,5 +17,6 @@ router.get('/project/detail' , testWare , pageController.projectDetail);
 
 router.post('/leads' , testWare , widgetController.leadSubmit);
 router.post('/contacts' , testWare , widgetController.contactUs);
+router.post('/auth' , testWare , widgetController.auth);
 
 module.exports = router ;

@@ -32,7 +32,7 @@ const commonHelper = {
         }        
         return obj;
     },
-    validateArray(req,data,validationRule){
+    validateArray: function(req,data,validationRule){
         let obj = {
             status : true,
             message : ""
@@ -45,7 +45,12 @@ const commonHelper = {
             }
         }
         return obj;
+    },
+    randomString : function (len) {
+        var p = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        return [...Array(len)].reduce(a=>a+p[~~(Math.random()*p.length)],'');
     }
+
 }
 
 

@@ -1,5 +1,6 @@
 const modelController = require('./modelController')
 const commonHelper = require('./commonHelper');
+const APIController = require('./APIController')
 
 var widgetController = {
     leadSubmit : async function (req , res ){
@@ -61,6 +62,45 @@ var widgetController = {
                 return commonHelper.sendResponseData(req , res , {} , "Error at backend" , true)
         }
     },
+    auth : async function(req , res) {
+        try{
+            if(!req.body.id_token){
+                return commonHelper.sendResponseData(req , res , {} , "id_token required" , true);
+            }else{
+                let url = "https://oauth2.googleapis.com/tokeninfo?id_token="+req.body.id_token;
+                let userData = await APIController.getAPI(url);
+                if(userData.error){
+                    return commonHelper.sendResponseData(req , res , {} , "Invalid login" , true)
+                }
+                let remember_digest = commonHelper.randomString(24);
+                let insertData = {
+                    email : userData.email,
+                    name : userData.name,
+                    profile_image : userData.picture,
+                    remember_digest : remember_digest,
+                    role : 'user'
+                }
+                let result = await modelController.findInDb({ email : userData.email } , "users" , ['profile_image','role' , 'status']);
+                if(result && result[0]){
+                    if(result[0].status !== 'active'){
+                        return commonHelper.sendResponseData(req , res , {} , "User is not active" , true)
+                    }
+                    await modelController.updateTable({remember_digest : remember_digest} , 'users' , userData.email , 'email' )
+                    insertData.status = 'logged in';
+                    insertData.profile_image = result[0].profile_image;
+                    insertData.role = result[0].role;
+                    return commonHelper.sendResponseData(req , res , insertData , "Logged in success" , false ,200);
+                } else{
+                    await modelController.insertIntoDb("users" , insertData);
+                    insertData.status = 'Registered Successfully';
+                    return commonHelper.sendResponseData(req , res , insertData , "Profile created" , false ,200);
+                }
+            }    
+        } catch(error){
+                console.log(error);
+                return commonHelper.sendResponseData(req , res , {} , "Error at backend" , true)
+        }
+    }
 
 }
 
