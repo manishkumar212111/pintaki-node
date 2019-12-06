@@ -85,7 +85,7 @@ var widgetController = {
                     if(result[0].status !== 'active'){
                         return commonHelper.sendResponseData(req , res , {} , "User is not active" , true)
                     }
-                    await modelController.updateTable({remember_digest : remember_digest} , 'users' , userData.email , 'email' )
+                    await modelController.updateTable({remember_digest : remember_digest , is_logged_in : 1} , 'users' , userData.email , 'email' )
                     insertData.status = 'logged in';
                     insertData.profile_image = result[0].profile_image;
                     insertData.role = result[0].role;

@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
-const port = 9000
+const port = 9009
 const apiV1 = require('./App/v1');
+const apiV2 = require('./App/v2');
+
 require('./App/configs/constants');
 require('./App/configs/connection');
 
@@ -21,5 +23,7 @@ app.use(function(req, res, next) {
     next();
 });
 app.use('/api/v1', apiV1);
+app.use('/api/v2', apiV2);
+
 
 app.listen(process.env.PORT || port, () => console.log(`Pintaki app listening on port ${port}!`))
