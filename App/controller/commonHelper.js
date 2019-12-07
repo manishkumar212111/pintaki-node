@@ -8,7 +8,7 @@ const commonHelper = {
                 data : data,
                 messages : messages    
             })
-        } else if(status == 500){
+        } else if(status == 500 || error){
             res.send({
                 status : 500,
                 messages : messages    

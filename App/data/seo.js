@@ -21,6 +21,11 @@ const data = {
                     title: data && data.title,    
                     pageDescription : data && data.pageDescription
                 }
+            case 'wishList':
+                return {
+                    title: "This is wishlist page",    
+                    pageDescription : "This is descriptionn for wishlist"    
+                }
         }
     }
 }
