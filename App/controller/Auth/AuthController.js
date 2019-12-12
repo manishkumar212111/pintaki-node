@@ -20,6 +20,14 @@ const AuthController = {
             console.log(error);
             res.send({status : 500, messages : "something wrong"});
         }
+    },
+    normalAuth : async (req, res , next) => {
+        try{
+            return next();
+        } catch (error){
+            console.log(error);
+            res.send({status : 500, messages : "something wrong"});
+        }
     }
 
 }
