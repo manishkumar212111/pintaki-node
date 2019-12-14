@@ -13,7 +13,7 @@ const commonHelper = {
                 status : 500,
                 messages : messages    
             })
-        }else if( status == 302){
+        } else if( status == 302){
             res.send({
                 status : 302,
                 messages : messages,

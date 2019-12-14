@@ -25,5 +25,17 @@ app.use(function(req, res, next) {
 app.use('/api/v1', apiV1);
 app.use('/api/v2', apiV2);
 
+router.get("/auth", function(req, res) {
+  var token = req.query.token || uuid.v4();
+  var expire = req.query.expire || parseInt(Date.now()/1000)+2400;
+  var privateAPIKey = "private_2bNBVB8F5Wk0HzzHXnXpJuwrqhw=";
+  var signature = crypto.createHmac('sha1', privateAPIKey).update(token+expire).digest('hex');
+  res.status(200);
+  res.send({
+      token : token,
+      expire : expire,
+      signature : signature
+  });
+});
 
 app.listen(process.env.PORT || port, () => console.log(`Pintaki app listening on port ${port}!`))
