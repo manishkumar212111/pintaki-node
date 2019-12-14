@@ -4,6 +4,9 @@ const port = 9009
 const apiV1 = require('./App/v1');
 const apiV2 = require('./App/v2');
 
+const uuid = require('uuid');
+const crypto = require("crypto");
+
 require('./App/configs/constants');
 require('./App/configs/connection');
 
@@ -25,7 +28,7 @@ app.use(function(req, res, next) {
 app.use('/api/v1', apiV1);
 app.use('/api/v2', apiV2);
 
-router.get("/auth", function(req, res) {
+app.get("/auth", function(req, res) {
   var token = req.query.token || uuid.v4();
   var expire = req.query.expire || parseInt(Date.now()/1000)+2400;
   var privateAPIKey = "private_2bNBVB8F5Wk0HzzHXnXpJuwrqhw=";
