@@ -70,7 +70,7 @@ const ProductController = {
                 user_id : req.user.id,
                 user_name : req.user.name,
                 firm_name : req.user.firm_name ? req.user.firm_name : "",
-                images : req.user.images,
+                images : req.body.images,
                 category : req.body.category 
             }        
             let insertId = await modelController.insertIntoDb('posts',insertObj);
