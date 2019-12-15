@@ -29,7 +29,7 @@ app.use('/api/v1', apiV1);
 app.use('/api/v2', apiV2);
 
 app.get("/auth", function(req, res) {
-  var token = req.query.token || uuid.v4();
+  var token = req.query.token || uuid.v4()+Math.random(8);
   var expire = req.query.expire || parseInt(Date.now()/1000)+2400;
   var privateAPIKey = "private_2bNBVB8F5Wk0HzzHXnXpJuwrqhw=";
   var signature = crypto.createHmac('sha1', privateAPIKey).update(token+expire).digest('hex');
