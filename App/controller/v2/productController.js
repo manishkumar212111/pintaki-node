@@ -9,7 +9,6 @@ const ProductController = {
             let validateObj = commonHelper.validateArray(req.body , ['product_id' , 'liked']);            
             
             if(!validateObj.status){
-                console.log(":in valiadte");
                 return commonHelper.sendResponseData(req , res , {} , validateObj.message , true , 500);
             }
             if(req.body.liked) {
@@ -50,6 +49,37 @@ const ProductController = {
                 seo : seoData.seo('wishList')
             }
             return commonHelper.sendResponseData(req , res , data , "Fetched Data" , false , 200);            
+        } catch (error){
+            console.log(error);
+            return commonHelper.sendResponseData(req , res , {} , "Error at backend" , true , 500)
+
+        }
+    },
+    createPost : async (req , res) => {
+        try {
+            if(!(req.user && req.user.id))
+                return commonHelper.sendResponseData(req , res , {} , "Login required" , true , 500)            
+            let validateObj = commonHelper.validateArray(req.body , ['title' , 'description' , 'category']);            
+            if(!validateObj.status){
+                return commonHelper.sendResponseData(req , res , {} , validateObj.message , true , 500);
+            }
+
+            let insertObj = {
+                title : req.body.title,
+                description : req.body.description,
+                user_id : req.user.id,
+                user_name : req.user.name,
+                firm_name : req.user.firm_name ? req.user.firm_name : "",
+                images : req.user.images,
+                category : req.body.category 
+            }        
+            let insertId = await modelController.insertIntoDb('posts',insertObj);
+            if(insertId){
+                var title = req.body.title && req.body.title.split(' ').join('-');   
+                await modelController.updateTable({url :  title+"/"+insertId} , 'posts' , insertId)
+                return commonHelper.sendResponseData(req , res , {id : insertId} , "post added" , true , 200);                        
+            }
+            return commonHelper.sendResponseData(req , res , {} , "Something wrongq" , true);            
         } catch (error){
             console.log(error);
             return commonHelper.sendResponseData(req , res , {} , "Error at backend" , true , 500)
