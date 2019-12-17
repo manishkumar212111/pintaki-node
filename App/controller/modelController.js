@@ -59,17 +59,31 @@ const modelController = {
             }
         });
     },
-    fetchFromDbInRange : function(tableName, fields , limit , range , orderByField , orderByValue) {
+    fetchFromDbInRange : function(tableName, fields , limit , range , orderByField , orderByValue , condition , delimeter = ' OR ') {
         return new Promise(async function(resolve, reject) {
             try {
                 let query = `SELECT ${fields.join()} FROM ${tableName}`;
                 let initialValue = limit * range;
+                
+                let conditionArray = [];
+                let valueArray = [];    
+                if(condition){
+                    for (var key in condition) {
+                        if (condition.hasOwnProperty(key)) {
+                            conditionArray.push(key + ' = ?');
+                            valueArray.push(condition[key]);
+                        }
+                    }
+                }
+                if(conditionArray.length > 0){
+                    query += " where " + (conditionArray).join(`${delimeter}`)
+                }
                 if(orderByField && orderByValue){
                     query += ` ORDER BY ${orderByField} ${orderByValue}`;
                 }
                 query += ` limit ${initialValue},${ initialValue+limit } `;
                 
-                let result = await executeQuery(query, []);
+                let result = await executeQuery(query, valueArray);
                 resolve(result);
             } catch (e) {
                 reject(e);

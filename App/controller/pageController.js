@@ -89,12 +89,17 @@ var pageController = {
             let currentPage = 1;
             if(req.query.page)
                 currentPage = parseInt(req.query.page);
-            
-                const data = {
-                posts : await modelController.fetchFromDbInRange('posts' , ['*'] , 4 , currentPage-1 , 'id' , 'desc'),
-                seo : seoData.seo('blogListing'),
-                pagination : await commonHelper.getPaginationObject('posts' , 4 ,currentPage)
+            let conditionObj= {}
+            if(req.query.category){
+                conditionObj = {
+                    category : req.query.category
+                }
             }
+                const data = {
+                    posts : await modelController.fetchFromDbInRange('posts' , ['*'] , 4 , currentPage-1 , 'id' , 'desc' , conditionObj , ' AND '),
+                    seo : seoData.seo('blogListing'),
+                    pagination : await commonHelper.getPaginationObject('posts' , 4 ,currentPage)
+                }
                 return commonHelper.sendResponseData(req , res , data , "fetched successfully" ,false,200);
             } catch(error){
                 console.log(error);
