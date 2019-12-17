@@ -84,6 +84,23 @@ var pageController = {
                 return commonHelper.sendResponseData(req , res , {} , "Error at backend" , true ,500)
         }
     },
+    getPosts: async function(req ,res){
+        try{
+            let currentPage = 1;
+            if(req.query.page)
+                currentPage = parseInt(req.query.page);
+            
+                const data = {
+                posts : await modelController.fetchFromDbInRange('posts' , ['*'] , 4 , currentPage-1 , 'id' , 'desc'),
+                seo : seoData.seo('blogListing'),
+                pagination : await commonHelper.getPaginationObject('posts' , 4 ,currentPage)
+            }
+                return commonHelper.sendResponseData(req , res , data , "fetched successfully" ,false,200);
+            } catch(error){
+                console.log(error);
+                return commonHelper.sendResponseData(req , res , {} , "Error at backend" , true ,500)
+        }
+    },
     blogDetail: async function(req , res){
         try{
             const validationResult = commonHelper.validateArray(req.query , ['id']);    

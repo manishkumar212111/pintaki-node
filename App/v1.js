@@ -14,6 +14,8 @@ router.get('/blog/list' , testWare , pageController.blogList);
 
 router.get('/blog/detail' , testWare , pageController.blogDetail);
 router.get('/project/detail' , testWare , pageController.projectDetail);
+router.get('/posts/list' , testWare , pageController.getPosts);
+
 
 router.post('/leads' , testWare , widgetController.leadSubmit);
 router.post('/contacts' , testWare , widgetController.contactUs);
