@@ -55,6 +55,21 @@ const ProductController = {
 
         }
     },
+    profile : async (req , res) => {
+        try {
+            if(!(req.user && req.user.id))
+                return commonHelper.sendResponseData(req , res , {} , "Login required" , true , 500)            
+            let data = {
+                "user_detail" : req.user,
+                "posts" : await modelController.findInDb({user_id : req.user.id} , 'posts' , ['*']) 
+            }
+            return commonHelper.sendResponseData(req , res , data , "Fetched Data" , false , 200);            
+        } catch (error){
+            console.log(error);
+            return commonHelper.sendResponseData(req , res , {} , "Error at backend" , true , 500)
+
+        }
+    },
     createPost : async (req , res) => {
         try {
             if(!(req.user && req.user.id))

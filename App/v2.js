@@ -11,6 +11,7 @@ router.get('/users/logout' , AuthController.Auth , userController.logout);
 router.post('/product/wishlist' , AuthController.Auth , ProductController.wishlist);
 router.get('/product/list/wishlist' , AuthController.Auth , ProductController.getWishList);
 router.post('/product/add' , AuthController.Auth , ProductController.createPost);
+router.get('/users/profile' , AuthController.Auth , ProductController.profile);
 
 router.post('/users/register' , AuthController.normalAuth , userController.register);
 router.post('/users/login' , AuthController.normalAuth , userController.login);
